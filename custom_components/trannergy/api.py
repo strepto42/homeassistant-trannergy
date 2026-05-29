@@ -90,7 +90,7 @@ class TrannergyInverterApi:
                 asyncio.open_connection(self._host, self._port),
                 timeout=CONNECTION_TIMEOUT,
             )
-        except asyncio.TimeoutError as err:
+        except TimeoutError as err:
             _LOGGER.debug(
                 "Timeout connecting to inverter at %s:%s", self._host, self._port
             )
@@ -116,8 +116,10 @@ class TrannergyInverterApi:
             self._raw_msg = await asyncio.wait_for(
                 reader.read(1024), timeout=READ_TIMEOUT
             )
-            _LOGGER.debug("Response: %s", self._raw_msg.hex(" ") if self._raw_msg else "None")
-        except asyncio.TimeoutError as err:
+            _LOGGER.debug(
+                "Response: %s", self._raw_msg.hex(" ") if self._raw_msg else "None"
+            )
+        except TimeoutError as err:
             _LOGGER.debug("Timeout reading data from inverter")
             raise TrannergyInverterTimeoutError(
                 "Timeout reading data from inverter"
@@ -131,7 +133,7 @@ class TrannergyInverterApi:
             writer.close()
             try:
                 await writer.wait_closed()
-            except Exception:  # noqa: BLE001
+            except Exception:
                 pass
 
         return self._parse_data()
@@ -152,7 +154,9 @@ class TrannergyInverterApi:
         # Check if inverter is online by checking temperature
         temperature = self._get_short(31)
         if temperature is None or temperature > 150:
-            _LOGGER.debug("Inverter appears to be offline (temperature: %s)", temperature)
+            _LOGGER.debug(
+                "Inverter appears to be offline (temperature: %s)", temperature
+            )
             return self._get_offline_data()
 
         # Status
@@ -315,4 +319,3 @@ class TrannergyInverterApi:
         """
         await self.async_get_data()
         return True
-

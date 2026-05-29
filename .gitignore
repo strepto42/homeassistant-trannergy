@@ -208,4 +208,11 @@ __marimo__/
 
 # Pycharm etc
 .idea
+*.iml
 .vscode
+
+# WSL virtualenv (HA integration tests)
+.venv-wsl
+
+# Claude Code local settings (shared settings.json is tracked)
+.claude/settings.local.json
