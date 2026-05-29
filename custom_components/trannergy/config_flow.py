@@ -6,7 +6,6 @@ import logging
 from typing import Any
 
 import voluptuous as vol
-
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant, callback
@@ -92,7 +91,7 @@ class TrannergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     info = await validate_input(self.hass, user_input)
                 except CannotConnect:
                     errors["base"] = "cannot_connect"
-                except Exception:  # noqa: BLE001
+                except Exception:
                     _LOGGER.exception("Unexpected exception")
                     errors["base"] = "unknown"
                 else:
@@ -100,9 +99,7 @@ class TrannergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     if CONF_SENSORS not in user_input:
                         user_input[CONF_SENSORS] = DEFAULT_SENSORS
 
-                    return self.async_create_entry(
-                        title=info["title"], data=user_input
-                    )
+                    return self.async_create_entry(title=info["title"], data=user_input)
 
         # Show form
         data_schema = vol.Schema(
@@ -132,7 +129,6 @@ class TrannergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class TrannergyOptionsFlowHandler(config_entries.OptionsFlow):
     """Handle Trannergy options."""
-
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
@@ -166,9 +162,9 @@ class TrannergyOptionsFlowHandler(config_entries.OptionsFlow):
 
         # Build schema with sensor checkboxes
         schema_dict: dict[vol.Required | vol.Optional, Any] = {
-            vol.Optional(
-                CONF_SCAN_INTERVAL, default=current_scan_interval
-            ): vol.Coerce(int),
+            vol.Optional(CONF_SCAN_INTERVAL, default=current_scan_interval): vol.Coerce(
+                int
+            ),
         }
 
         # Add checkbox for each sensor type
@@ -185,4 +181,3 @@ class TrannergyOptionsFlowHandler(config_entries.OptionsFlow):
 
 class CannotConnect(HomeAssistantError):
     """Error to indicate we cannot connect."""
-

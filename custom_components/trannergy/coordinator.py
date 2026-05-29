@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
-from typing import Any
+from typing import Any, ClassVar
 
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.storage import Store
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import (
     TrannergyInverterApi,
@@ -27,7 +27,7 @@ class TrannergyDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """Class to manage fetching Trannergy data from the inverter."""
 
     # Sensors that should preserve their last known value when offline
-    PRESERVE_WHEN_OFFLINE = {"energytotal", "hourstotal"}
+    PRESERVE_WHEN_OFFLINE: ClassVar[set[str]] = {"energytotal", "hourstotal"}
 
     def __init__(
         self,
@@ -163,4 +163,3 @@ class TrannergyDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         if self._unsub_interval is not None:
             self._unsub_interval()
             self._unsub_interval = None
-

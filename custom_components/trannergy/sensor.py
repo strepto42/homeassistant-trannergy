@@ -389,9 +389,13 @@ class TrannergySensor(CoordinatorEntity[TrannergyDataUpdateCoordinator], SensorE
         if self._sensor_key == "status":
             return True
 
-        # TOTAL_INCREASING sensors are only available if they have a valid non-zero value
+        # TOTAL_INCREASING sensors need a valid non-zero value to be available
         if self._attr_state_class == SensorStateClass.TOTAL_INCREASING:
-            value = self.coordinator.data.get(self._sensor_key) if self.coordinator.data else None
+            value = (
+                self.coordinator.data.get(self._sensor_key)
+                if self.coordinator.data
+                else None
+            )
             if value is None or value == 0.0:
                 return False
             try:
@@ -401,4 +405,3 @@ class TrannergySensor(CoordinatorEntity[TrannergyDataUpdateCoordinator], SensorE
 
         # Other sensors are only available when the inverter is online
         return self.coordinator.inverter_online
-
