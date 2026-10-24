@@ -1,6 +1,6 @@
 [project]
 name = "home-assistant-omnik-trannergy-pv-inverter"
-version = "1.1.6"
+version = "1.1.7"
 description = "Home Assistant integration for Trannergy / Omnik PV inverters via local TCP polling."
 readme = "README.md"
 requires-python = ">=3.13"

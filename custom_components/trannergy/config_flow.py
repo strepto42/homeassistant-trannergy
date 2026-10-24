@@ -118,6 +118,50 @@ class TrannergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=data_schema, errors=errors
         )
 
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Change the inverter host/port of an existing entry in place.
+
+        The entry is updated (not recreated) so its entry_id, unique_id,
+        options and the persisted energytotal/hourstotal values are kept.
+        """
+        entry = self.hass.config_entries.async_get_entry(self.context["entry_id"])
+        if entry is None:
+            return self.async_abort(reason="unknown")
+
+        errors: dict[str, str] = {}
+
+        if user_input is not None:
+            data = {**entry.data, **user_input}
+            try:
+                await validate_input(self.hass, data)
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
+            except Exception:
+                _LOGGER.exception("Unexpected exception")
+                errors["base"] = "unknown"
+            else:
+                return self.async_update_reload_and_abort(
+                    entry, data=data, reason="reconfigure_successful"
+                )
+
+        data_schema = vol.Schema(
+            {
+                vol.Required(
+                    CONF_INVERTER_HOST, default=entry.data[CONF_INVERTER_HOST]
+                ): str,
+                vol.Optional(
+                    CONF_INVERTER_PORT,
+                    default=entry.data.get(CONF_INVERTER_PORT, DEFAULT_PORT),
+                ): vol.Coerce(int),
+            }
+        )
+
+        return self.async_show_form(
+            step_id="reconfigure", data_schema=data_schema, errors=errors
+        )
+
     @staticmethod
     @callback
     def async_get_options_flow(
