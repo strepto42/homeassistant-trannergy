@@ -10,6 +10,6 @@
   "issue_tracker": "https://github.com/strepto42/home-assistant-omnik-trannergy-pv-inverter/issues",
   "loggers": ["custom_components.trannergy"],
   "requirements": [],
-  "version": "1.1.6"
+  "version": "1.1.7"
 }
 

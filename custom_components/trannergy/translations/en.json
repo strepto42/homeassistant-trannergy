@@ -17,6 +17,18 @@
           "inverter_port": "TCP port for communication (default: 8899)",
           "scan_interval": "How often to poll the inverter for new data"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Trannergy PV Inverter",
+        "description": "Change how Home Assistant connects to your inverter. Only the connection details change; your sensors, history and preserved totals are kept.",
+        "data": {
+          "inverter_host": "Inverter IP Address",
+          "inverter_port": "Inverter Port"
+        },
+        "data_description": {
+          "inverter_host": "The IP address of your inverter on your local network",
+          "inverter_port": "TCP port for communication (default: 8899)"
+        }
       }
     },
     "error": {
@@ -25,7 +37,8 @@
       "unknown": "An unexpected error occurred."
     },
     "abort": {
-      "already_configured": "This inverter is already configured."
+      "already_configured": "This inverter is already configured.",
+      "reconfigure_successful": "The inverter connection was updated successfully."
     }
   },
   "options": {

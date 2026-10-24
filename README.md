@@ -17,6 +17,7 @@ The values will be presented as sensors in [Home Assistant](https://home-assista
 - **Offline Handling**: Gracefully handles inverter going offline at night
 - **Multiple Sensors**: Support for all inverter data points including DC input, AC output, power, energy, and more
 - **Options Flow**: Change scan interval and enable/disable sensors without reconfiguring
+- **Reconfigure**: Change the inverter IP address or port in place, keeping history and totals
 
 ## Supported Inverters
 
@@ -87,6 +88,16 @@ After adding the integration, you can configure options:
 1. Go to **Settings** → **Devices & Services**
 2. Find your Trannergy integration and click **Configure**
 3. Adjust the scan interval and enable/disable individual sensors
+
+### Changing the IP Address or Port
+
+If your inverter gets a new IP address (or you need a different port):
+
+1. Go to **Settings** → **Devices & Services**
+2. Find your Trannergy integration, click the **⋮** menu and choose **Reconfigure**
+3. Enter the new IP address and/or port
+
+The existing entry is updated in place, so your sensor history and the preserved energy/hours totals are kept. You can do this while the inverter is offline.
 
 ## Available Sensors
 
@@ -167,6 +178,10 @@ If this custom component is not working for you, please try these similar projec
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+### v1.1.7
+
+- Added a **Reconfigure** step so the inverter IP address and port can be changed without deleting the integration (history and preserved totals are kept)
 
 ### v1.0.0
 
